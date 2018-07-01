@@ -38,6 +38,8 @@ body {
     grid-template-rows: 1fr 1fr 1fr;
     height: 100%;
     width: 100%;
+    border-radius: 50px;
+    background-color:dodgerblue;
 }
 #rightMargin {
     grid-column: 3;
@@ -61,9 +63,11 @@ body {
     width: 100%;
 }
 .boardTile {
-    border: solid 1px black;
+    
     height: 100%;
     width: 100%;
     /* background: url('../assets/o.png'); */
     background-size: cover;
+    border-radius: 100px;
+    background-color: red;
 }
