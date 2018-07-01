@@ -92,14 +92,7 @@ class View {
     }
     // adds the event listener and checks for win/game over every turn
     clickClick(){
-        if(this.gameEnd() === true) {
-            this.fresh = [
-                [0,0,0],
-                [0,0,0],
-                [0,0,0]
-            ]
-            this.updateBoard(this.fresh)
-        }
+        
         let cont = document.querySelector("#gameBoard");
             cont.addEventListener("click", doSomething.bind(this), false);
             function doSomething(e) {
@@ -117,14 +110,16 @@ class View {
                 if (this.whoWon(1) === true) {
                     window.alert('player X wins');
                     location.reload(true);
+                    boardFill += 1;
                 } else if (this.whoWon(2) === true){
                     window.alert('player O wins');
                     location.reload(true);
+                    boardFill += 1;
                 }
 
-                if (this.boardFill === 8) {
-                    
-                    
+                if (this.boardFill === 9) {
+                    window.alert(`It's a tie, losers`);
+                    location.reload(true);   
                 }
                 // e.target.style.backgroundColor = 'red';
                 // window.alert("Hello " + passedX + passedY);    
