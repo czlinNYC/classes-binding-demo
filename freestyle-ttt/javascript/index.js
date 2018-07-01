@@ -2,6 +2,7 @@
 // import { GameModel } from './model.js';
 
 class GameModel {
+   // default game states
     constructor () {
         this.game = [
             [0,0,0],
@@ -11,6 +12,7 @@ class GameModel {
         this.playerOneTurn = true;
         this.gameOver = false;
     }
+    // changes the boardtile clicked
     changeTile(x,y,player) {
         // debugger;
         let targDiv = document.getElementById(`tile${x}${y}`)
@@ -23,6 +25,7 @@ class GameModel {
         }
         return this.game;
     }
+    // checks player turn and returns it and changes player turn
     returnTurn() {
         if (this.playerOneTurn === true){
             this.playerOneTurn = false;
@@ -70,6 +73,7 @@ class View {
         this.boardFill = 0;
         this.gameEnd = theEnd;
     }
+    // creates the divs on the center gameboard div and styles them
     populateGameBoard (gameState) {
         this.status = gameState;
         for ( let x = 0; x < 3; x += 1) {
@@ -86,6 +90,7 @@ class View {
         }
 
     }
+    // adds the event listener and checks for win/game over every turn
     clickClick(){
         if(this.gameEnd() === true) {
             this.fresh = [
@@ -127,6 +132,7 @@ class View {
                 
         }
     }
+    // updates the board when called parameter is a game state
     updateBoard(gameState){
         this.status = gameState;
         for ( let x = 0; x < 3; x += 1) {
@@ -135,16 +141,17 @@ class View {
                 tileFlip.dataset.boardStatus = `${this.status[x][y]}`;
                 if( tileFlip.dataset.boardStatus ===  '0' ) {
                 } else if ( tileFlip.dataset.boardStatus ===  '1' ) {
-                    tileFlip.style.background = `url('../freestyle-ttt/assets/x.png')`;
+                    tileFlip.style.background = `url('./assets/x.png')`;
                 } else if (tileFlip.dataset.boardStatus ===  '2') {
-                    tileFlip.style.background = `url('../freestyle-ttt/assets/o.png')`;
+                    tileFlip.style.background = `url('./assets/o.png')`;
                 }
                 tileFlip.style.backgroundSize = 'cover';
             }
         }
 
 
-    }
+    } 
+    //renders
     render() {
         this.populateGameBoard(this.getBoardStatus());
         this.clickClick();
