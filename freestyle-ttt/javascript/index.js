@@ -32,6 +32,9 @@ class GameModel {
             return !this.playerOneTurn;
         }
     }
+    getGameOver(){
+        return this.gameOver;
+    }
     getBoard() {
         return this.game;
     }
@@ -57,7 +60,7 @@ class GameModel {
 
 
 class View {
-    constructor(rootEl,playerClick,getBoardStatus,playerTurn,returnWinner) {
+    constructor(rootEl,playerClick,getBoardStatus,playerTurn,returnWinner,theEnd) {
         this.rootEl = rootEl;
         this.playerClick = playerClick;
         this.getBoardStatus = getBoardStatus;
@@ -65,6 +68,7 @@ class View {
         this.whoWon = returnWinner;
         this.status = this.getBoardStatus();
         this.boardFill = 0;
+        this.gameEnd = theEnd;
     }
     populateGameBoard (gameState) {
         this.status = gameState;
@@ -83,9 +87,16 @@ class View {
 
     }
     clickClick(){
+        if(this.gameEnd() === true) {
+            this.fresh = [
+                [0,0,0],
+                [0,0,0],
+                [0,0,0]
+            ]
+            this.updateBoard(this.fresh)
+        }
         let cont = document.querySelector("#gameBoard");
             cont.addEventListener("click", doSomething.bind(this), false);
- 
             function doSomething(e) {
                 let clickedItem = e.target.id;
                 let passedX = clickedItem.slice(4,5);
@@ -99,9 +110,11 @@ class View {
                     this.boardFill += 1;
                 }
                 if (this.whoWon(1) === true) {
-                    setTimeout(window.alert('player X wins'),1000);
+                    window.alert('player X wins');
+                    location.reload(true);
                 } else if (this.whoWon(2) === true){
                     window.alert('player O wins');
+                    location.reload(true);
                 }
 
                 if (this.boardFill === 8) {
@@ -146,8 +159,9 @@ const getBoardStatus = gameModel.getBoard.bind(gameModel);
 const playerClick = gameModel.changeTile.bind(gameModel);
 const playerTurn = gameModel.returnTurn.bind(gameModel);
 const returnWinner = gameModel.checkWin.bind(gameModel);
+const theEnd = gameModel.getGameOver.bind(gameModel);
 
-const view = new View(rootEl, playerClick, getBoardStatus, playerTurn,returnWinner);
+const view = new View(rootEl, playerClick, getBoardStatus, playerTurn,returnWinner,theEnd);
 // view.populateGameBoard(gameModel.getBoard());
 // view.updateBoard(gameModel.getBoard());
 // view.clickClick();
