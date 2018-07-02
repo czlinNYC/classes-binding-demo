@@ -1,6 +1,3 @@
-// import { View } from './view.js';
-// import { GameModel } from './model.js';
-
 class GameModel {
    // default game states
     constructor () {
@@ -42,7 +39,6 @@ class GameModel {
         return this.game;
     }
     checkWin(plyr) {
-       console.log('check win');
         if ((this.game[0][0] === plyr && this.game[0][1] === plyr && this.game[0][2] === plyr) ||
             (this.game[1][0] === plyr && this.game[1][1] === plyr && this.game[1][2] === plyr) ||
             (this.game[2][0] === plyr && this.game[2][1] === plyr && this.game[2][2] === plyr) ||
@@ -56,12 +52,8 @@ class GameModel {
              } else {
                return this.gameOver;
              }
-
+        }
     }
-}
-
-
-
 class View {
     constructor(rootEl,playerClick,getBoardStatus,playerTurn,returnWinner,theEnd) {
         this.rootEl = rootEl;
@@ -88,11 +80,9 @@ class View {
                 rootEl.appendChild(newTile);
             }
         }
-
     }
     // adds the event listener and checks for win/game over every turn
     clickClick(){
-        
         let cont = document.querySelector("#gameBoard");
             cont.addEventListener("click", doSomething.bind(this), false);
             function doSomething(e) {
@@ -100,9 +90,6 @@ class View {
                 let passedX = clickedItem.slice(4,5);
                 let passedY = clickedItem.slice(5,6);
                 // console.log(passedX,passedY);
-                
-
-
                 if (e.target.dataset.boardStatus === '0'){
                     this.updateBoard(playerClick(passedX,passedY,this.playerTurn()));
                     this.boardFill += 1;
@@ -110,23 +97,16 @@ class View {
                 if (this.whoWon(1) === true) {
                     window.alert('player X wins');
                     location.reload(true);
-                    boardFill += 1;
                 } else if (this.whoWon(2) === true){
                     window.alert('player O wins');
                     location.reload(true);
-                    boardFill += 1;
                 }
-
                 if (this.boardFill === 9) {
                     window.alert(`It's a tie, losers`);
                     location.reload(true);   
                 }
-                // e.target.style.backgroundColor = 'red';
-                // window.alert("Hello " + passedX + passedY);    
-                // console.log('yolo');
-                
+            }
         }
-    }
     // updates the board when called parameter is a game state
     updateBoard(gameState){
         this.status = gameState;
@@ -143,8 +123,6 @@ class View {
                 tileFlip.style.backgroundSize = 'cover';
             }
         }
-
-
     } 
     //renders
     render() {
@@ -152,19 +130,12 @@ class View {
         this.clickClick();
     }
 }
-
 const rootEl = document.querySelector('#gameBoard');
-
 const gameModel = new GameModel();
-
 const getBoardStatus = gameModel.getBoard.bind(gameModel);
 const playerClick = gameModel.changeTile.bind(gameModel);
 const playerTurn = gameModel.returnTurn.bind(gameModel);
 const returnWinner = gameModel.checkWin.bind(gameModel);
 const theEnd = gameModel.getGameOver.bind(gameModel);
-
 const view = new View(rootEl, playerClick, getBoardStatus, playerTurn,returnWinner,theEnd);
-// view.populateGameBoard(gameModel.getBoard());
-// view.updateBoard(gameModel.getBoard());
-// view.clickClick();
 view.render();
