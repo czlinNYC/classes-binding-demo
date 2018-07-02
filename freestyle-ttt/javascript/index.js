@@ -83,30 +83,61 @@ class View {
     }
     // adds the event listener and checks for win/game over every turn
     clickClick(){
+        if (gameModel.gameOver === true) {
+            window.alert('Click bottom footer for new Game!');
+        } else{
         let cont = document.querySelector("#gameBoard");
             cont.addEventListener("click", doSomething.bind(this), false);
             function doSomething(e) {
                 let clickedItem = e.target.id;
                 let passedX = clickedItem.slice(4,5);
                 let passedY = clickedItem.slice(5,6);
-                // console.log(passedX,passedY);
                 if (e.target.dataset.boardStatus === '0'){
                     this.updateBoard(playerClick(passedX,passedY,this.playerTurn()));
                     this.boardFill += 1;
                 }
-                if (this.whoWon(1) === true) {
-                    window.alert('player X wins');
-                    location.reload(true);
-                } else if (this.whoWon(2) === true){
-                    window.alert('player O wins');
-                    location.reload(true);
-                }
-                if (this.boardFill === 9) {
-                    window.alert(`It's a tie, losers`);
-                    location.reload(true);   
-                }
+                this.alertWinner();
+                // player notifications
+                this.playerTurnNotification(this.boardFill);
             }
         }
+    } 
+    alertWinner(){
+        if (this.whoWon(1) === true) {
+            document.querySelector('#gameMessage').innerText = 'Player X Wins! Click here for new Game!';
+            document.querySelector('#mainFooter').addEventListener('click', this.resetBoard);
+            this.winBoard(1);
+        } else if (this.whoWon(2) === true){
+            document.querySelector('#gameMessage').innerText = 'Player O Wins! Click here for new Game!';
+            document.querySelector('#mainFooter').addEventListener('click', this.resetBoard);
+            this.winBoard(2);
+        } else if (this.boardFill === 9) {
+            document.querySelector('#gameMessage').innerText = `It's a tie! Click here for new Game!`;
+            document.querySelector('#mainFooter').addEventListener('click', this.resetBoard);
+        }
+    }
+    resetBoard() {
+        location.reload(true);
+    }
+    winBoard(winner) {
+        for ( let x = 0; x < 3; x += 1) {
+            for ( let y = 0; y < 3; y += 1){
+                let tileFlip = document.querySelector(`#tile${x}${y}`);
+                tileFlip.dataset.boardStatus = winner;
+                this.status[x][y] = winner;
+            }
+        }
+        this.updateBoard(this.status);
+    }
+    playerTurnNotification(turnNumber){
+        if (turnNumber % 2 === 0) {
+            document.querySelector('#player1').style.backgroundColor = 'dodgerblue';
+            document.querySelector('#player2').style.backgroundColor = 'white';
+        } else {
+            document.querySelector('#player2').style.backgroundColor = 'dodgerblue';
+            document.querySelector('#player1').style.backgroundColor = 'white';
+        }
+    }
     // updates the board when called parameter is a game state
     updateBoard(gameState){
         this.status = gameState;
