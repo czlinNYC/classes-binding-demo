@@ -83,9 +83,6 @@ class View {
     }
     // adds the event listener and checks for win/game over every turn
     clickClick(){
-        if (gameModel.gameOver === true) {
-            window.alert('Click bottom footer for new Game!');
-        } else{
         let cont = document.querySelector("#gameBoard");
             cont.addEventListener("click", doSomething.bind(this), false);
             function doSomething(e) {
@@ -101,7 +98,7 @@ class View {
                 this.playerTurnNotification(this.boardFill);
             }
         }
-    } 
+    // more robust winner notification rather than the window alert
     alertWinner(){
         if (this.whoWon(1) === true) {
             document.querySelector('#gameMessage').innerText = 'Player X Wins! Click here for new Game!';
@@ -119,6 +116,7 @@ class View {
     resetBoard() {
         location.reload(true);
     }
+    //displays a winning board preventing further moves
     winBoard(winner) {
         for ( let x = 0; x < 3; x += 1) {
             for ( let y = 0; y < 3; y += 1){
